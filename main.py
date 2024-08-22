@@ -7,7 +7,7 @@ app = FastAPI()
 con = sqlite3.connect("itemsDatabase.db")
 cur = con.cursor()
 
-# cur.execute("DROP TABLE IF EXISTS items")
+cur.execute("DROP TABLE IF EXISTS items")
 cur.execute("CREATE TABLE IF NOT EXISTS items(name, price, is_offer)")
 cur.execute("""
     INSERT INTO items VALUES
@@ -25,7 +25,7 @@ class Item(BaseModel):
 
 @app.get("/")
 async def read_root():
-    return {"Hello": "World"}
+    return {"message": "Api de controle de itens"}
 
 @app.get("/items")
 async def read_items():
@@ -34,9 +34,25 @@ async def read_items():
     return items
 
 @app.get("/items/{item_id}")
-async def read_item(item_id: int, q: Union[str, None] = None):
-    return {"item_id": item_id, "q": q}
+async def read_item(item_id: int):
+    cur.execute("SELECT * FROM items WHERE rowid = ?", (item_id,))
+    item = cur.fetchone()
+    return item
+
+@app.post("/items/")
+async def create_item(item: Item):
+    cur.execute("INSERT INTO items VALUES (?, ?, ?)", (item.name, item.price, item.is_offer))
+    con.commit()
+    return item
 
 @app.put("/items/{item_id}")
 async def update_item(item_id: int, item: Item):
-    return {"item_name": item.name, "item_id": item_id}
+    cur.execute("UPDATE items SET name = ?, price = ?, is_offer = ? WHERE rowid = ?", (item.name, item.price, item.is_offer, item_id))
+    con.commit()
+    return item
+
+@app.delete("/items/{item_id}")
+async def delete_item(item_id: int):
+    cur.execute("DELETE FROM items WHERE rowid = ?", (item_id,))
+    con.commit()
+    return {"message": "Item deletado"}

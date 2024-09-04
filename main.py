@@ -1,6 +1,4 @@
-''' API de controle de itens '''
-
-''' API de controle de itens '''
+""" API de controle de itens """
 
 import sqlite3
 from typing import Union
@@ -23,20 +21,20 @@ if itemsDB is None:
     """)
     con.commit()
 
-''' Classe Item '''
+""" Classe Item """
 
 class Item(BaseModel):
     name: str
     price: float
     is_offer: Union[bool, None] = None
 
-''' Rotas '''
+""" Rotas """
 
 @app.get("/")
 async def read_root():
     return {"message": "Api de controle de itens"}
 
-''' GET TODOS OS ITEM '''
+""" GET TODOS OS ITEM """
 
 @app.get("/items")
 async def read_items():
@@ -46,7 +44,7 @@ async def read_items():
         return {"message": "Nenhum item encontrado"}
     return items
 
-''' GET ITEM POR ID '''
+""" GET ITEM POR ID """
 
 @app.get("/items/{item_id}")
 async def read_item(item_id: int):
@@ -56,7 +54,7 @@ async def read_item(item_id: int):
         return {"message": "Item não encontrado"}
     return item
 
-''' POST ITEM '''
+""" POST ITEM """
 
 @app.post("/items")
 async def create_item(item: Item):
@@ -66,7 +64,7 @@ async def create_item(item: Item):
         return {"message": "Erro ao inserir item"}
     return item
 
-''' PUT ITEM POR ID '''
+""" PUT ITEM POR ID """
 
 @app.put("/items/{item_id}")
 async def update_item(item_id: int, item: Item):
@@ -75,7 +73,7 @@ async def update_item(item_id: int, item: Item):
     con.commit()
     return item
 
-''' DELETE ITEM POR ID '''
+""" DELETE ITEM POR ID """
 
 @app.delete("/items/{item_id}")
 async def delete_item(item_id: int):

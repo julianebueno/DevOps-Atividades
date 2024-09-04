@@ -1,15 +1,15 @@
+import sqlite3
 from typing import Union
 from fastapi import FastAPI
 from pydantic import BaseModel
-import sqlite3
 
 app = FastAPI()
 con = sqlite3.connect("itemsDatabase.db")
 cur = con.cursor()
 cur.execute("CREATE TABLE IF NOT EXISTS items(name, price, is_offer)")
 cur.execute("SELECT * FROM items")
-items = cur.fetchall()
-if items == None:
+itemsDB = cur.fetchall()
+if itemsDB is None:
     cur.execute("""
         INSERT INTO items VALUES
             ('Bola', 3, true),
@@ -33,7 +33,7 @@ async def read_root():
 async def read_items():
     cur.execute("SELECT * FROM items")
     items = cur.fetchall()
-    if items == None:
+    if items is None:
         return {"message": "Nenhum item encontrado"}
     return items
 
@@ -41,7 +41,7 @@ async def read_items():
 async def read_item(item_id: int):
     cur.execute("SELECT * FROM items WHERE rowid = ?", (item_id,))
     item = cur.fetchone()
-    if item == None:
+    if item is None:
         return {"message": "Item não encontrado"}
     return item
 
@@ -55,7 +55,8 @@ async def create_item(item: Item):
 
 @app.put("/items/{item_id}")
 async def update_item(item_id: int, item: Item):
-    cur.execute("UPDATE items SET name = ?, price = ?, is_offer = ? WHERE rowid = ?", (item.name, item.price, item.is_offer, item_id))
+    cur.execute("UPDATE items SET name = ?, price = ?, is_offer = ? WHERE rowid = ?", 
+                (item.name, item.price, item.is_offer, item_id))
     con.commit()
     return item
 

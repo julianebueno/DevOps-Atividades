@@ -71,7 +71,6 @@ async def create_item(item: Item):
 @app.put("/items/{item_id}")
 async def update_item(item_id: int, item: Item):
     cur.execute("UPDATE items SET name = ?, price = ?, is_offer = ? WHERE rowid = ?" ,
-    cur.execute("UPDATE items SET name = ?, price = ?, is_offer = ? WHERE rowid = ?" ,
                 (item.name, item.price, item.is_offer, item_id))
     con.commit()
     return item

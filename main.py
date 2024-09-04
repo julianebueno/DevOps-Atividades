@@ -1,3 +1,5 @@
+''' API de controle de itens '''
+
 import sqlite3
 from typing import Union
 from fastapi import FastAPI
@@ -19,16 +21,18 @@ if itemsDB is None:
     """)
     con.commit()
 
-
+''' Classe Item '''
 class Item(BaseModel):
     name: str
     price: float
     is_offer: Union[bool, None] = None
 
+''' Rotas '''
 @app.get("/")
 async def read_root():
     return {"message": "Api de controle de itens"}
 
+''' GET TODOS OS ITEM '''
 @app.get("/items")
 async def read_items():
     cur.execute("SELECT * FROM items")
@@ -37,6 +41,7 @@ async def read_items():
         return {"message": "Nenhum item encontrado"}
     return items
 
+''' GET ITEM POR ID '''
 @app.get("/items/{item_id}")
 async def read_item(item_id: int):
     cur.execute("SELECT * FROM items WHERE rowid = ?", (item_id,))
@@ -45,6 +50,7 @@ async def read_item(item_id: int):
         return {"message": "Item não encontrado"}
     return item
 
+''' POST ITEM'''
 @app.post("/items")
 async def create_item(item: Item):
     cur.execute("INSERT INTO items VALUES (?, ?, ?)", (item.name, item.price, item.is_offer))
@@ -53,13 +59,15 @@ async def create_item(item: Item):
         return {"message": "Erro ao inserir item"}
     return item
 
+''' PUT ITEM POR ID'''
 @app.put("/items/{item_id}")
 async def update_item(item_id: int, item: Item):
-    cur.execute("UPDATE items SET name = ?, price = ?, is_offer = ? WHERE rowid = ?", 
+    cur.execute("UPDATE items SET name = ?, price = ?, is_offer = ? WHERE rowid = ?" ,
                 (item.name, item.price, item.is_offer, item_id))
     con.commit()
     return item
 
+''' DELETE ITEM POR ID'''
 @app.delete("/items/{item_id}")
 async def delete_item(item_id: int):
     cur.execute("DELETE FROM items WHERE rowid = ?", (item_id,))

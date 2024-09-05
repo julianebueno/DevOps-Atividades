@@ -14,7 +14,7 @@ jobs:
       with:
         name: meuArtefato.zip
         path: 
-          **.py
+          '**.py'
           README.md
 
   deploy:

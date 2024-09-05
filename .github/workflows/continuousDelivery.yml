@@ -24,6 +24,6 @@ jobs:
     - name: Download a Build Artifact
       uses: actions/download-artifact@v4.1.8
       with:
-        name: meuArtefato.zip
+        name: meuArtefato
     - name: Display structure of downloaded files
       run: ls -R

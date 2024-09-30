@@ -26,8 +26,9 @@ async def test_create_item():
 
 @pytest.mark.asyncio
 async def test_update_item():
-  test_item = Item(name="Teste", price=10, is_offer=True, item_id=1)
-  result = await update_item(test_item)
+  test_item_id = 1
+  test_item = Item(name="Teste", price=10, is_offer=True)
+  result = await update_item(test_item_id, test_item)
   assert result == test_item
 
 @pytest.mark.asyncio

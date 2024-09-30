@@ -1,7 +1,7 @@
 """ Testes """
 
 import pytest
-import pytest_asyncio
+# import pytest_asyncio
 
 from src.main import Item
 from src.main import read_root, read_items

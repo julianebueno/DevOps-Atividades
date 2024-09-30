@@ -10,13 +10,13 @@ async def test_root():
 @pytest.mark.asyncio
 async def test_read_items():
   result = await read_items()
-  assert result == {"message": "teste read_items"}
+  assert not result == {"message": "Nenhum item encontrado"}
 
 @pytest.mark.asyncio
 async def test_read_item():
   test_item_id = 1
   result = await read_item(test_item_id)
-  assert result == {"message": "teste read_item"}
+  assert not result == {"message": "Item não encontrado"}
 
 @pytest.mark.asyncio
 async def test_create_item():

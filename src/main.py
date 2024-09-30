@@ -11,14 +11,14 @@ cur = con.cursor()
 cur.execute("CREATE TABLE IF NOT EXISTS items(name, price, is_offer)")
 cur.execute("SELECT * FROM items")
 itemsDB = cur.fetchall()
-if itemsDB is None:
+if itemsDB == []:
     cur.execute("""
         INSERT INTO items VALUES
             ('Bola', 3, true),
             ('Dado', 5, false),
             ('Cubo', 10, true),
             ('Piramide', 7, false)
-    """)
+        """)
     con.commit()
 
 class Item(BaseModel):

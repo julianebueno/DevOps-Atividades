@@ -47,5 +47,3 @@ async def test_delete_item():
     test_item_id = 1
     result = await delete_item(test_item_id)
     assert result == {"message": "Item deletado"}
-    
-    

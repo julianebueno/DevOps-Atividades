@@ -1,8 +1,9 @@
 """ Testes """
 
-from src.main import *
 import pytest
 import pytest_asyncio
+
+from src.main import read_root, read_items, read_item, create_item, update_item, delete_item
 
 @pytest.mark.asyncio
 async def test_root():
